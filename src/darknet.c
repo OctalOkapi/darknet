@@ -7,6 +7,7 @@
 #include "cuda.h"
 #include "blas.h"
 #include "connected_layer.h"
+#include "globals.h"
 
 extern void predict_classifier(char *datacfg, char *cfgfile, char *weightfile, char *filename, int top);
 extern void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename, float thresh, float hier_thresh);
@@ -393,9 +394,11 @@ int main(int argc, char **argv)
     } else if (0 == strcmp(argv[1], "lsd")){
         run_lsd(argc, argv);
     } else if (0 == strcmp(argv[1], "detector")){
+        parse_path_cfg("");
         run_detector(argc, argv);
     } else if (0 == strcmp(argv[1], "detect")){
         float thresh = find_float_arg(argc, argv, "-thresh", .24);
+        parse_path_cfg("");
         char *filename = (argc > 4) ? argv[4]: 0;
         test_detector("cfg/coco.data", argv[2], argv[3], filename, thresh, .5);
     } else if (0 == strcmp(argv[1], "cifar")){
